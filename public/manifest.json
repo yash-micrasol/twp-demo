@@ -1,0 +1,40 @@
+{
+  "theme_color": "#ffffff",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": ".",
+  "name": "TWP - Distribution",
+  "short_name": "TWP APP",
+  "description": "TWP PWA APP",
+  "prefer_related_applications": true,
+  "related_applications": [{
+    "platform": "play",
+    "id": "com.google.samples.apps.iosched"
+  }],
+  "icons": [{
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
