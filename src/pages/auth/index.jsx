@@ -15,17 +15,19 @@ const Auth = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'user@winetracker.com',
-      password: '123456'
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object().shape({
-      email: Yup.string().required('Please Enter Email'),
-      password: Yup.string().required('Please Enter Password')
+      email: Yup.string().required("Please Enter Email"),
+      password: Yup.string().required("Please Enter Password"),
     }),
     onSubmit: (val, { resetForm }) => {
-      dispatch(loginUser(val)).then((e) => e.type === 'loginUser/fulfilled' && navigate('/'));
+      dispatch(loginUser(val)).then(
+        (e) => e.type === "loginUser/fulfilled" && navigate("/")
+      );
       resetForm({});
-    }
+    },
   });
 
   const { values, touched, errors, handleBlur, setFieldValue, handleSubmit } = formik;
