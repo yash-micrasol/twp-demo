@@ -23,19 +23,19 @@ export const CommonHeader = ({
 
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
-      <div className="relative flex justify-between items-center bg-white p-4 shadow-md">
+      <div className="relative flex items-center justify-between p-4 bg-white shadow-md">
         <FontAwesomeIcon
           icon={faAngleLeft}
-          className="text-blue w-6 h-6 left-2"
+          className="w-6 h-6 text-blue left-2"
           onClick={() => naviagate(-1)}
         />
-        <p className="absolute left-1/2 -translate-x-1/2 text-black font-semibold text-lg">
+        <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
         </p>
         <div className="space-x-4">
           <FontAwesomeIcon
             icon={faSliders}
-            className="text-blue w-6 h-6 left-2"
+            className="w-6 h-6 text-blue left-2"
             onClick={() => {
               setShow(true);
               setIsSearch(false);
@@ -44,14 +44,14 @@ export const CommonHeader = ({
           />
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
-            className="text-blue w-6 h-6 left-2"
+            className="w-6 h-6 text-blue left-2"
             onClick={() => setIsSearch(!isSearch)}
           />
         </div>
       </div>
       {isSearch && (
-        <div className="border-y border-gray-200 shadow-md p-3 space-x-4 flex justify-around items-center">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="text-blue w-6 h-6" />
+        <div className="flex items-center justify-around p-3 space-x-4 border-gray-200 shadow-md border-y">
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="w-6 h-6 text-blue" />
           <Input
             type="text"
             name="search"
@@ -60,11 +60,11 @@ export const CommonHeader = ({
               setSearch(e.target.value);
             }}
             placeholder="Enter search text here"
-            className="outline-none w-full h-full"
+            className="w-full h-full outline-none"
           />
           <FontAwesomeIcon
             icon={faXmark}
-            className="text-blue w-8 h-8"
+            className="w-8 h-8 text-blue"
             onClick={() => {
               setSearch('');
               setIsSearch(false);
@@ -82,36 +82,39 @@ export const SearchHeader = ({ search, setSearch, isSearch, setIsSearch, title, 
   const searchInput = useRef(null);
 
   useEffect(() => {
-    if (isSearch) {
+    if (isSearch && !searchInput) {
       searchInput.current.focus();
     }
   }, [isSearch]);
 
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
-      <div className="relative flex justify-between items-center bg-white p-4 shadow-md mb-2">
+      <div className="relative flex items-center justify-between p-4 mb-2 bg-white shadow-md">
         <FontAwesomeIcon
           icon={faAngleLeft}
-          className="text-blue w-6 h-6 left-2"
+          className="w-6 h-6 text-blue left-2"
           onClick={() => naviagate(-1)}
         />
-        <p className="absolute left-1/2 -translate-x-1/2 text-black font-semibold text-lg">
+        <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
         </p>
 
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          className="text-blue w-6 h-6 left-2"
+          className="w-6 h-6 text-blue left-2"
           onClick={() => {
             setIsSearch(!isSearch);
           }}
         />
       </div>
       <div hidden={!isSearch}>
-        <div className="border-y border-gray-200 shadow-md p-3 space-x-4 flex justify-around items-center ">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="text-blue w-6 h-6" />
+        <div className="flex items-center justify-around p-3 space-x-4 border-gray-200 shadow-md border-y ">
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className="w-6 h-6 text-blue"
+          />
           <Input
-            id="searchInput"
+            id="search"
             ref={searchInput}
             type="text"
             name="search"
@@ -121,13 +124,13 @@ export const SearchHeader = ({ search, setSearch, isSearch, setIsSearch, title, 
               setPage(0);
             }}
             placeholder="Enter search text here"
-            className="outline-none w-full h-full"
+            className="w-full h-full outline-none"
           />
           <FontAwesomeIcon
             icon={faXmark}
-            className="text-blue w-8 h-8"
+            className="w-8 h-8 text-blue"
             onClick={() => {
-              setSearch('');
+              setSearch("");
               setIsSearch(false);
             }}
           />
@@ -143,13 +146,13 @@ export const SimpleHeader = ({ title }) => {
 
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
-      <div className="relative flex justify-between items-center bg-white p-4 shadow-md">
+      <div className="relative flex items-center justify-between p-4 bg-white shadow-md">
         <FontAwesomeIcon
           icon={faAngleLeft}
-          className="text-blue w-6 h-6 left-2"
+          className="w-6 h-6 text-blue left-2"
           onClick={() => naviagate(-1)}
         />
-        <p className="absolute left-1/2 -translate-x-1/2 text-black font-semibold text-lg">
+        <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
         </p>
       </div>

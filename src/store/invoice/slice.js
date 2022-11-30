@@ -214,39 +214,45 @@ export const editDeliveryPerson = createAsyncThunk(
 
 // create slice
 const invoiceSlice = createSlice({
-  name: 'invoice',
+  name: "invoice",
   initialState: initialStates,
   extraReducers: {
     [searchInvoice.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [searchInvoice.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.data =
         action.payload.page === 1
           ? action.payload.response
           : {
               ...state.data,
               ...action.payload.response,
-              data: [...(state.data?.data ?? []), ...(action.payload?.response?.data ?? [])]
+              data: [
+                ...(state.data?.data ?? []),
+                ...(action.payload?.response?.data ?? []),
+              ],
             };
     },
     [searchInvoice.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [invoiceData.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [invoiceData.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.data =
         action.payload.page === 1
           ? action.payload.response
           : {
               ...state.data,
               ...action.payload.response,
-              data: [...(state.data?.data ?? []), ...(action.payload?.response?.data ?? [])]
+              data: [
+                ...(state.data?.data ?? []),
+                ...(action.payload?.response?.data ?? []),
+              ],
             };
       state.invoiceItemData =
         action.payload.page === 1
@@ -256,85 +262,85 @@ const invoiceSlice = createSlice({
               ...action.payload.response,
               data: [
                 ...(state.invoiceItemData?.data ?? []),
-                ...(action.payload?.response?.data ?? [])
-              ]
+                ...(action.payload?.response?.data ?? []),
+              ],
             };
     },
     [invoiceData.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [singleInvoiceData.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [singleInvoiceData.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.singleData = action.payload;
     },
     [singleInvoiceData.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [invoiceDetail.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [invoiceDetail.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.invDetails = action.payload;
     },
     [invoiceDetail.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [getDeliveryPersonList.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [getDeliveryPersonList.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.deliveryPersonList = action.payload;
     },
     [getDeliveryPersonList.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [markDelivered.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [markDelivered.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.delivered = action.payload;
     },
     [markDelivered.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [addInvoiceItems.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [addInvoiceItems.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.addInvoiceItemsData = action.payload;
     },
     [addInvoiceItems.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [editInvoiceItems.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [editInvoiceItems.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.editInvoiceItemsData = action.payload;
     },
     [editInvoiceItems.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [getInvoiceItems.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [getInvoiceItems.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.invoiceItemData =
         action.payload.page === 1
           ? action.payload.response
@@ -343,42 +349,42 @@ const invoiceSlice = createSlice({
               ...action.payload.response,
               data: [
                 ...(state.invoiceItemData?.data ?? []),
-                ...(action.payload?.response?.data ?? [])
-              ]
+                ...(action.payload?.response?.data ?? []),
+              ],
             };
     },
     [getInvoiceItems.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [editDueDate.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [editDueDate.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
     },
     [editDueDate.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [editDeliveryPerson.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [editDeliveryPerson.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
     },
     [editDeliveryPerson.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
-    }
+    },
   },
   reducers: {
     setOrder(state, action) {
       state.order = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const { setInvoice, setOrder } = invoiceSlice.actions;
+export const { setOrder } = invoiceSlice.actions;
 const { reducer } = invoiceSlice;
 export default reducer;

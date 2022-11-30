@@ -7,7 +7,8 @@
   "name": "TWP - Distribution",
   "short_name": "TWP",
   "description": "TWP APP",
-  "icons": [{
+  "icons": [
+    {
       "src": "logo.png",
       "sizes": "192x192",
       "type": "image/png",
