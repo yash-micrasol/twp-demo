@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 html {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
   background: #ffffff;
 }
 
