@@ -35,8 +35,8 @@ const ReviewOrder = () => {
       </div>
 
       <div className="">
-        <div className="flex flex-col space-y-2 bg-red-200 p-3">
-          <p className="text-center text-lg my-1">Order total : ${total}</p>
+        <div className="flex flex-col p-3 space-y-2 bg-red-200">
+          <p className="my-1 text-lg text-center">Order total : ${total}</p>
           <label htmlFor="date">Preferred delivery date</label>
           <DatePicker
             id="date"
@@ -48,7 +48,7 @@ const ReviewOrder = () => {
             }}
             placeholderText="Select Date"
             dateFormat="MM/dd/yyyy"
-            className="w-full p-3 focus:outline-none rounded-md"
+            className="w-full p-3 rounded-md focus:outline-none"
           />
           <label htmlFor="note">Note</label>
           <textarea
@@ -58,7 +58,7 @@ const ReviewOrder = () => {
             name="note"
             placeholder="Enter Note"
             onChange={(e) => setNote(e.target.value)}
-            className="p-2 focus:outline-none rounded-md resize-none"
+            className="p-2 rounded-md resize-none focus:outline-none"
           />
         </div>
         <Button
@@ -75,7 +75,11 @@ const ReviewOrder = () => {
                   })
                 )
               })
-            );
+            ).then((res) => {
+              if (res.type === "newOrder/fulfilled") {
+                navigate(-2);
+              }
+            })
           }}
         >
           Submit

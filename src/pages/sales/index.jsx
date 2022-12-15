@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import Chart from './components/Chart';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-import { month, monthLong, prevYear, year } from '../../helpers/constant';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAnalytics } from '../../store/sales/slice';
-import Loader from '../../components/Loader';
+import React, { useEffect } from "react";
+import Chart from "./components/Chart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { month, monthLong, prevYear, year } from "../../helpers/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { getAnalytics } from "../../store/sales/slice";
+import Loader from "../../components/Loader";
 
 const Header = () => {
-  const naviagate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className="relative flex justify-center items-center bg-white p-4 shadow-md">
       <FontAwesomeIcon
         icon={faAngleLeft}
         className="absolute text-blue w-6 h-6 left-2"
-        onClick={() => naviagate('/')}
+        onClick={() => navigate("/")}
       />
       <p className="text-black font-semibold text-lg">Sales analytics</p>
       <p></p>
@@ -37,7 +37,7 @@ const Sales = () => {
       name: key ? prevYear : year,
       data: Object.values(item).map((e) => {
         return Math.floor(e);
-      })
+      }),
     };
   });
 
@@ -50,14 +50,16 @@ const Sales = () => {
   return (
     <>
       <Header />
-      {status === 'loading' ? (
+      {status === "loading" ? (
         <Loader />
       ) : (
         <div>
           <div className="space-y-2">
             <div className="flex justify-around items-center mt-6">
               <p className="border-t w-[25%] border-blue" />
-              <p className="text-blue font-semibold text-xl whitespace-nowrap">Sales Report</p>
+              <p className="text-blue font-semibold text-xl whitespace-nowrap">
+                Sales Report
+              </p>
               <p className="border-t w-[25%] border-blue" />
             </div>
             <p className="text-darkGray text-center text-sm">

@@ -82,6 +82,7 @@ const NewOrder = () => {
   }, [search]);
 
   useEffect(() => {
+    setOrder({});
     const temp = JSON.parse(JSON.stringify(orderData));
     setOrder(temp);
     setTotal(0);
@@ -132,9 +133,9 @@ const NewOrder = () => {
             }}
             loader={<MiniLoader />}
             hasMore={!(data?.current_page === data?.last_page || data?.total === 0)}
-            className="pb-28 space-y-1"
+            className="space-y-1 pb-28"
           >
-            {!data?.data && <p className="text-darkGray text-center mt-12">No Data Found</p>}
+            {!data?.data && <p className="mt-12 text-center text-darkGray">No Data Found</p>}
             {(data?.data ?? []).map((e, key) => {
               return (
                 <NewOrderCard

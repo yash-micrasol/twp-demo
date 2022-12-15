@@ -74,7 +74,7 @@ const AppRoutes = () => (
           </Routes>
         }
       />
-      {/* Inovice */}
+      {/* Invoice */}
       <Route
         path="/invoice/*"
         element={

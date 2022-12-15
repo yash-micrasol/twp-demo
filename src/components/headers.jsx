@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faMagnifyingGlass,
   faSliders,
-  faXmark
-} from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-import Input from '../components/Input';
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import Input from "../components/Input";
 
 export const CommonHeader = ({
   search,
@@ -16,10 +16,10 @@ export const CommonHeader = ({
   setIsSearch,
   setShow,
   filter,
-  filterClass = '',
-  title
+  filterClass = "",
+  title,
 }) => {
-  const naviagate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
@@ -27,7 +27,7 @@ export const CommonHeader = ({
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="w-6 h-6 text-blue left-2"
-          onClick={() => naviagate(-1)}
+          onClick={() => navigate(-1)}
         />
         <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
@@ -39,7 +39,7 @@ export const CommonHeader = ({
             onClick={() => {
               setShow(true);
               setIsSearch(false);
-              setSearch('');
+              setSearch("");
             }}
           />
           <FontAwesomeIcon
@@ -51,7 +51,10 @@ export const CommonHeader = ({
       </div>
       {isSearch && (
         <div className="flex items-center justify-around p-3 space-x-4 border-gray-200 shadow-md border-y">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="w-6 h-6 text-blue" />
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className="w-6 h-6 text-blue"
+          />
           <Input
             type="text"
             name="search"
@@ -66,19 +69,28 @@ export const CommonHeader = ({
             icon={faXmark}
             className="w-8 h-8 text-blue"
             onClick={() => {
-              setSearch('');
+              setSearch("");
               setIsSearch(false);
             }}
           />
         </div>
       )}
-      {filter && <p className={`bg-white text-blue p-4 pt-2 ${filterClass}`}>{filter}</p>}
+      {filter && (
+        <p className={`bg-white text-blue p-4 pt-2 ${filterClass}`}>{filter}</p>
+      )}
     </div>
   );
 };
 
-export const SearchHeader = ({ search, setSearch, isSearch, setIsSearch, title, setPage }) => {
-  const naviagate = useNavigate();
+export const SearchHeader = ({
+  search,
+  setSearch,
+  isSearch,
+  setIsSearch,
+  title,
+  setPage,
+}) => {
+  const navigate = useNavigate();
   const searchInput = useRef(null);
 
   useEffect(() => {
@@ -93,7 +105,7 @@ export const SearchHeader = ({ search, setSearch, isSearch, setIsSearch, title, 
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="w-6 h-6 text-blue left-2"
-          onClick={() => naviagate(-1)}
+          onClick={() => navigate(-1)}
         />
         <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
@@ -142,7 +154,7 @@ export const SearchHeader = ({ search, setSearch, isSearch, setIsSearch, title, 
 };
 
 export const SimpleHeader = ({ title }) => {
-  const naviagate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
@@ -150,7 +162,7 @@ export const SimpleHeader = ({ title }) => {
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="w-6 h-6 text-blue left-2"
-          onClick={() => naviagate(-1)}
+          onClick={() => navigate(-1)}
         />
         <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
