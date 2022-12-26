@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRotateLeft, faPowerOff } from '@fortawesome/free-solid-svg-icons';
-import logo from '../../assets/main_logo.png';
+import logo from '../../assets/main_logo.webp';
 import { getDashboardData } from '../../store/dashboard/slice';
 import { useDispatch } from 'react-redux';
 import Modal from '../../components/Modal';
@@ -12,14 +12,18 @@ const Header = () => {
   const dispatch = useDispatch();
   const [isLogout, setIsLogout] = useState(false);
   return (
-    <header className="flex justify-between items-center px-4 shadow-md w-full">
+    <header className="flex items-center justify-between w-full px-4 shadow-md">
       <FontAwesomeIcon
         icon={faArrowRotateLeft}
         className="text-blue w-7 h-7"
         onClick={() => dispatch(getDashboardData())}
       />
       <img src={logo} alt="logo" className="w-1/2 h-24" />
-      <FontAwesomeIcon icon={faPowerOff} onClick={setIsLogout} className="text-blue w-7 h-7" />
+      <FontAwesomeIcon
+        icon={faPowerOff}
+        onClick={setIsLogout}
+        className="text-blue w-7 h-7"
+      />
       <Logout isLogout={isLogout} setIsLogout={setIsLogout} />
     </header>
   );
@@ -27,8 +31,8 @@ const Header = () => {
 
 const Footer = ({ data }) => {
   return (
-    <footer className="bg-lightWhite w-full flex flex-col justify-center items-center p-1">
-      <p className="text-blue font-medium">Privacy Policy</p>
+    <footer className="flex flex-col items-center justify-center w-full p-1 bg-lightWhite">
+      <p className="font-medium text-blue">Privacy Policy</p>
       <p className="text-darkGray">Last Sync date : {data.last_sync_date}</p>
     </footer>
   );
@@ -54,7 +58,7 @@ const Logout = ({ isLogout, setIsLogout }) => {
             Cancel
           </Button>
           <Button
-            className="border border-blue py-3"
+            className="py-3 border border-blue"
             onClick={() => {
               setIsLogout(false);
               localStorage.clear();
@@ -71,7 +75,7 @@ const Logout = ({ isLogout, setIsLogout }) => {
 
 const DashBoardLayout = ({ children, data }) => {
   return (
-    <div className="min-h-screen flex flex-col justify-between space-y-4">
+    <div className="flex flex-col justify-between min-h-screen space-y-4">
       <Header />
       {children}
       <Footer data={data} />

@@ -25,7 +25,11 @@ export const searchInvoice = createAsyncThunk(
         },
         { cancelToken: cancelToken.token }
       );
-      return { response: response.data.body, page };
+      return {
+        response: response?.data?.body ?? [],
+        page,
+        state: response?.code === "ERR_CANCELED",
+      };
     } catch (error) {
       if (!error.response) {
         throw error;
@@ -137,7 +141,11 @@ export const getInvoiceItems = createAsyncThunk(
         },
         { cancelToken: cancelToken.token }
       );
-      return { response: response.data.body, page };
+      return {
+        response: response?.data?.body ?? [],
+        page,
+        state: response?.code === "ERR_CANCELED",
+      };
     } catch (error) {
       if (!error.response) {
         throw error;
@@ -221,7 +229,7 @@ const invoiceSlice = createSlice({
       state.status = "loading";
     },
     [searchInvoice.fulfilled]: (state, action) => {
-      state.status = "succeed";
+      state.status = action.payload.state ? "loading" : "succeed";
       state.data =
         action.payload.page === 1
           ? action.payload.response
@@ -340,7 +348,7 @@ const invoiceSlice = createSlice({
       state.status = "loading";
     },
     [getInvoiceItems.fulfilled]: (state, action) => {
-      state.status = "succeed";
+      state.status = action.payload.state ? "loading" : "succeed";
       state.invoiceItemData =
         action.payload.page === 1
           ? action.payload.response
@@ -367,9 +375,7 @@ const invoiceSlice = createSlice({
       state.status = "failed";
       state.error = action.payload;
     },
-    [editDeliveryPerson.pending]: (state, action) => {
-      state.status = "loading";
-    },
+    [editDeliveryPerson.pending]: (state, action) => {},
     [editDeliveryPerson.fulfilled]: (state, action) => {
       state.status = "succeed";
     },

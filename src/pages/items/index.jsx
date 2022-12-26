@@ -72,7 +72,7 @@ const Items = () => {
   return (
     <div>
       <CommonHeader
-        title={'Items'}
+        title={"Items"}
         setShow={setShow}
         search={search}
         isSearch={isSearch}
@@ -96,17 +96,21 @@ const Items = () => {
           dataLength={data?.data?.length ?? 50}
           next={() => {
             setPage(page + 1);
-            if (search !== '') {
+            if (search !== "") {
               dispatch(searchItems({ page: page + 1, search }));
             } else {
               dispatch(filterItems({ type: filterVal.value, page: page + 1 }));
             }
           }}
           loader={<MiniLoader />}
-          hasMore={!(data?.current_page === data?.last_page || data?.total === 0)}
+          hasMore={
+            !(data?.current_page === data?.last_page || data?.total === 0)
+          }
           className="space-y-1"
         >
-          {!data?.data && <p className="text-darkGray text-center mt-12">No Data Found</p>}
+          {!data?.data && (
+            <p className="mt-12 text-center text-darkGray">No Data Found</p>
+          )}
           {(data?.data ?? []).map((e, key) => {
             return <ItemCard key={key} data={e} />;
           })}

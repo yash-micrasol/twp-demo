@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import Button from '../../../components/Button';
 import { SimpleHeader } from '../../../components/headers';
 import Loader from '../../../components/Loader';
@@ -12,8 +12,8 @@ import { editDueDate } from '../../../store/invoice/slice';
 import { formatDate } from '../../../helpers/constant';
 
 const PendingOrderDetails = () => {
-  const { state } = useLocation();
-  const { invoice_number } = state;
+  const params = useParams();
+  const invoice_number = params?.invoiceNumber;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,27 +39,27 @@ const PendingOrderDetails = () => {
         <Loader />
       ) : (
         <div className="p-3 space-y-2">
-          <div className="rounded-md bg-white">
-            <div className="w-full flex justify-start space-x-4 items-center bg-blue p-2 rounded-t-md">
+          <div className="bg-white rounded-md">
+            <div className="flex items-center justify-start w-full p-2 space-x-4 bg-blue rounded-t-md">
               <span>
-                <p className="bg-white text-blue text-4xl flex justify-center items-center w-20 h-20 rounded-full">
+                <p className="flex items-center justify-center w-20 h-20 text-4xl bg-white rounded-full text-blue">
                   {shortName[0]?.charAt(0)}
                   {shortName[1]?.charAt(0)}
                 </p>
               </span>
-              <p className="text-white font-semibold">{data?.customer_name}</p>
+              <p className="font-semibold text-white">{data?.customer_name}</p>
             </div>
 
             <div className="border rounded-b-md">
               <div className="p-4 space-y-2">
                 <div className="space-y-2">
-                  <span className="flex justify-between items-center">
+                  <span className="flex items-center justify-between">
                     <p>Order Date : {data?.invoice_date}</p>
                     <p>${data?.total_amount}</p>
                   </span>
                   <p>Placed By : {data?.order_by}</p>
 
-                  <span className="flex space-x-3 items-center">
+                  <span className="flex items-center space-x-3">
                     <p>Pref. Delivery Date : {data?.delivery_date}</p>
                     <EditDate
                       date={new Date(data?.invoice_date ?? null)}
@@ -83,10 +83,10 @@ const PendingOrderDetails = () => {
                   {/* delivered */}
                   {data?.picked_status === 'delivered' && (
                     <>
-                      <span className="flex justify-between items-center">
+                      <span className="flex items-center justify-between">
                         <p>
                           Status :{' '}
-                          <span className="text-green capitalize"> {data?.picked_status} </span>
+                          <span className="capitalize text-green"> {data?.picked_status} </span>
                         </p>
                         <Button className="px-1.5 py-2">
                           Delivered
@@ -104,8 +104,8 @@ const PendingOrderDetails = () => {
           </div>
 
           {data?.items?.length > 0 && (
-            <div className="rounded-b-md shadow-md">
-              <p className="text-blue font-semibold px-3 py-5 text-lg bg-gray-200 rounded-t-md">
+            <div className="shadow-md rounded-b-md">
+              <p className="px-3 py-5 text-lg font-semibold bg-gray-200 text-blue rounded-t-md">
                 Ordered Items
               </p>
               <ul>

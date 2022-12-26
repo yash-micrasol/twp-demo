@@ -105,7 +105,7 @@ const Invoice = ({ setLoading }) => {
   return (
     <div>
       <CommonHeader
-        title={'Open Invoices'}
+        title={"Open Invoices"}
         setShow={setShow}
         search={search}
         isSearch={isSearch}
@@ -133,10 +133,14 @@ const Invoice = ({ setLoading }) => {
             dispatch(invoiceData({ page: page + 1 }));
           }}
           loader={<MiniLoader />}
-          hasMore={!(data?.current_page === data?.last_page || data?.total === 0)}
-          className="space-y-1 my-2"
+          hasMore={
+            !(data?.current_page === data?.last_page || data?.total === 0)
+          }
+          className="my-2 space-y-1"
         >
-          {!data?.data && <p className="text-darkGray text-center mt-12">No Data Found</p>}
+          {!data?.data && (
+            <p className="mt-12 text-center text-darkGray">No Data Found</p>
+          )}
           {(data?.data ?? []).map((e, key) => {
             return <ItemCard key={key} data={e} />;
           })}

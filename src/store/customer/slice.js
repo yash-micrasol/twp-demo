@@ -25,7 +25,11 @@ export const searchCustomer = createAsyncThunk(
         },
         { cancelToken: cancelToken.token }
       );
-      return { response: response.data.body, page };
+      return {
+        response: response?.data?.body ?? [],
+        page,
+        state: response?.code === "ERR_CANCELED",
+      };
     } catch (error) {
       if (!error.response) {
         throw error;
@@ -109,7 +113,7 @@ const customerSlice = createSlice({
       state.status = 'loading';
     },
     [searchCustomer.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = action.payload.state ? "loading" : "succeed";
       state.data =
         action.payload.page === 1
           ? action.payload.response
@@ -146,7 +150,7 @@ const customerSlice = createSlice({
     },
     [customerDetails.fulfilled]: (state, action) => {
       state.status = 'succeed';
-      state.customer = action.payload?.customer_details ?? {};
+      state.customer = action.payload?.customer_details ?? null;
       state.invoice = action.payload?.invoice_detials ?? [];
     },
     [customerDetails.rejected]: (state, action) => {
@@ -194,10 +198,13 @@ const customerSlice = createSlice({
     },
     setOrder(state, action) {
       state.order = action.payload;
+    },
+    setCustomerData(state, action) {
+      state.customerData = action.payload;
     }
   }
 });
 
-export const { setInvoice, setOrder } = customerSlice.actions;
+export const { setInvoice, setOrder, setCustomerData } = customerSlice.actions;
 const { reducer } = customerSlice;
 export default reducer;

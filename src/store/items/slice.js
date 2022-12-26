@@ -25,7 +25,11 @@ export const searchItems = createAsyncThunk(
         },
         { cancelToken: cancelToken.token }
       );
-      return { response: response.data.body, page };
+      return {
+        response: response?.data?.body ?? [],
+        page,
+        state: response?.code === "ERR_CANCELED",
+      };
     } catch (error) {
       if (!error.response) {
         throw error;
@@ -62,7 +66,7 @@ const itemsSlice = createSlice({
       state.status = 'loading';
     },
     [searchItems.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = action.payload.state ? "loading" : "succeed";
       state.data =
         action.payload.page === 1
           ? action.payload.response

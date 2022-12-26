@@ -1,29 +1,34 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { axiosApi } from '../../helpers/api';
-import initialStates from './state';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { axiosApi } from "../../helpers/api";
+import initialStates from "./state";
 
 let cancelToken;
 
 export const getPendingOrder = createAsyncThunk(
-  'getPendingOrder',
+  "getPendingOrder",
   async (data, { rejectWithValue }) => {
     try {
       //Check if there are any previous pending requests
       if (typeof cancelToken != typeof undefined) {
-        cancelToken.cancel('Operation canceled due to new request.');
+        cancelToken.cancel("Operation canceled due to new request.");
       }
 
       //Save the cancel token for the current request
       cancelToken = axios.CancelToken.source();
       const response = await axiosApi.post(
-        '/pending-order-list',
+        "/pending-order-list",
         {
-          ...data
+          ...data,
         },
         { cancelToken: cancelToken.token }
       );
-      return { response: response.data.body, page: data.page };
+
+      return {
+        response: response?.data?.body ?? [],
+        page: data?.page ?? 1,
+        state: response?.code === "ERR_CANCELED",
+      };
     } catch (error) {
       if (!error.response) {
         throw error;
@@ -34,11 +39,11 @@ export const getPendingOrder = createAsyncThunk(
 );
 
 export const getPendingOrderDetails = createAsyncThunk(
-  'getPendingOrderDetails',
+  "getPendingOrderDetails",
   async ({ invoice_number }, { rejectWithValue }) => {
     try {
-      const response = await axiosApi.post('/pending-order-items-list', {
-        invoice_number
+      const response = await axiosApi.post("/pending-order-items-list", {
+        invoice_number,
       });
       return response.data.body;
     } catch (error) {
@@ -52,40 +57,43 @@ export const getPendingOrderDetails = createAsyncThunk(
 
 // create slice
 const pendingOrderSlice = createSlice({
-  name: 'pendingOrder',
+  name: "pendingOrder",
   initialState: initialStates,
   extraReducers: {
     [getPendingOrder.pending]: (state, action) => {
-      state.status = state.order.length <= 0 ? 'loading' : 'succeed';
+      state.status = "loading";
     },
     [getPendingOrder.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = action.payload.state ? "loading" : "succeed";
       state.order =
         action.payload.page === 1
           ? action.payload.response
           : {
               ...state.order,
               ...action.payload.response,
-              data: [...(state.order?.data ?? []), ...(action.payload?.response?.data ?? [])]
+              data: [
+                ...(state.order?.data ?? []),
+                ...(action.payload?.response?.data ?? []),
+              ],
             };
     },
     [getPendingOrder.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.order = [];
       state.error = action.payload;
     },
     [getPendingOrderDetails.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [getPendingOrderDetails.fulfilled]: (state, action) => {
-      state.status = 'succeed';
+      state.status = "succeed";
       state.orderDetails = action.payload;
     },
     [getPendingOrderDetails.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 
 const { reducer } = pendingOrderSlice;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Input from "../components/Input";
+import { GetRoute } from "../helpers/constant";
 
 export const CommonHeader = ({
   search,
@@ -20,14 +21,14 @@ export const CommonHeader = ({
   title,
 }) => {
   const navigate = useNavigate();
-
+  let route = GetRoute();
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
       <div className="relative flex items-center justify-between p-4 bg-white shadow-md">
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="w-6 h-6 text-blue left-2"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate(route)}
         />
         <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
@@ -91,21 +92,14 @@ export const SearchHeader = ({
   setPage,
 }) => {
   const navigate = useNavigate();
-  const searchInput = useRef(null);
-
-  useEffect(() => {
-    if (isSearch && !searchInput) {
-      searchInput.current.focus();
-    }
-  }, [isSearch]);
-
+  let route = GetRoute();
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
       <div className="relative flex items-center justify-between p-4 mb-2 bg-white shadow-md">
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="w-6 h-6 text-blue left-2"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate(route)}
         />
         <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}
@@ -127,7 +121,6 @@ export const SearchHeader = ({
           />
           <Input
             id="search"
-            ref={searchInput}
             type="text"
             name="search"
             value={search}
@@ -155,14 +148,14 @@ export const SearchHeader = ({
 
 export const SimpleHeader = ({ title }) => {
   const navigate = useNavigate();
-
+  let route = GetRoute();
   return (
     <div className="w-full bg-white sticky top-0 space-y-2 z-[999]">
       <div className="relative flex items-center justify-between p-4 bg-white shadow-md">
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="w-6 h-6 text-blue left-2"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate(route)}
         />
         <p className="absolute text-lg font-semibold text-black -translate-x-1/2 left-1/2">
           {title}

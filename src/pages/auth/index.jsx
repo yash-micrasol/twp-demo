@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { loginUser } from '../../store/auth/slice';
-import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/main_logo.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import Input from '../../components/Input';
-import Loader from '../../components/Loader';
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../store/auth/slice";
+import { useNavigate } from "react-router-dom";
+import logo from "../../assets/main_logo.webp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLock,
+  faEnvelope,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
+import Input from "../../components/Input";
+import Loader from "../../components/Loader";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -16,6 +21,8 @@ const Auth = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isProtected, setIsProtected] = useState(true);
+
+  const { error } = useSelector((store) => store.auth);
 
   const formik = useFormik({
     initialValues: {
@@ -31,8 +38,8 @@ const Auth = () => {
       dispatch(loginUser(val)).then((e) => {
         if (e.type === "loginUser/fulfilled") {
           navigate("/");
-          setIsLoading(false);
         }
+        setIsLoading(false);
       });
       resetForm({});
     },
@@ -98,10 +105,8 @@ const Auth = () => {
               className="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer top-1/2 right-3"
             />
           </label>
-          {errors.password && touched.password && (
-            <p className="text-redColor text-start">{errors.password}</p>
-          )}
         </div>
+        {error && <p className="text-redColor text-start">{error}</p>}
         <button
           type="submit"
           className="w-full py-3 text-white rounded bg-blue"

@@ -18,6 +18,7 @@ const NewOrder = () => {
   const dispatch = useDispatch();
   const { state } = useLocation();
   const navigate = useNavigate();
+  const customer_id = state?.customer_id ?? null
 
   const { data, orderData } = useSelector((store) => {
     return { data: store.items.data, orderData: store.customer.order };
@@ -56,10 +57,10 @@ const NewOrder = () => {
   };
 
   useEffect(() => {
-    if (!state) {
-      navigate(-1);
+    if (!customer_id) {
+      navigate("/customer");
     }
-  }, [navigate, state]);
+  }, [navigate, customer_id]);
 
   useEffect(() => {
     if (!isSearch) {
@@ -98,22 +99,22 @@ const NewOrder = () => {
     <div className="min-h-screen">
       <ViewOrderModal show={view} data={viewData} setShow={setView} />
       <CommonHeader
-        title={'New Order'}
+        title={"New Order"}
         setShow={setShow}
         search={search}
         isSearch={isSearch}
         setPage={setPage}
         setSearch={setSearch}
         setIsSearch={setIsSearch}
-        filter={`New Order For ${state?.name ?? ''}`}
+        filter={`New Order For ${state?.name ?? ""}`}
         filterClass="text-center"
       />
       <FilterNewOrder
         show={show}
         setShow={setShow}
         setPage={setPage}
-        filterList={filterList}
         filterVal={filterVal}
+        filterList={filterList}
         setFilterVal={setFilterVal}
       />
 
@@ -125,17 +126,23 @@ const NewOrder = () => {
             dataLength={data?.data?.length ?? 50}
             next={() => {
               setPage(page + 1);
-              if (search !== '') {
+              if (search !== "") {
                 dispatch(searchItems({ page: page + 1, search }));
               } else {
-                dispatch(filterItems({ type: filterVal.value, page: page + 1 }));
+                dispatch(
+                  filterItems({ type: filterVal.value, page: page + 1 })
+                );
               }
             }}
             loader={<MiniLoader />}
-            hasMore={!(data?.current_page === data?.last_page || data?.total === 0)}
+            hasMore={
+              !(data?.current_page === data?.last_page || data?.total === 0)
+            }
             className="space-y-1 pb-28"
           >
-            {!data?.data && <p className="mt-12 text-center text-darkGray">No Data Found</p>}
+            {!data?.data && (
+              <p className="mt-12 text-center text-darkGray">No Data Found</p>
+            )}
             {(data?.data ?? []).map((e, key) => {
               return (
                 <NewOrderCard
@@ -151,7 +158,7 @@ const NewOrder = () => {
         )}
       </div>
 
-      <NewOrderFooter total={total} order={order} customer_id={state.customer_id} />
+      <NewOrderFooter total={total} order={order} customer_id={customer_id} />
     </div>
   );
 };

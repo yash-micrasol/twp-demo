@@ -30,7 +30,7 @@ const Documents = () => {
         setIsSearch={setIsSearch}
         setPage={setPage}
       />
-      <p className="text-lg p-3 text-blue bg-white sticky">Document Categories</p>
+      <p className="sticky p-3 text-lg bg-white text-blue">Document Categories</p>
       <div className="mt-2">
         {status === 'loading' ? (
           <Loader />
@@ -44,9 +44,9 @@ const Documents = () => {
             hasMore={!(data?.current_page === data?.last_page || data?.total === 0)}
             className="space-y-1"
           >
-            {!data?.data && <p className="text-darkGray text-center mt-12">No Data Found</p>}
+            {!data?.data && <p className="mt-12 text-center text-darkGray">No Data Found</p>}
             {(data?.data ?? []).map((e, key) => {
-              return <DocumentsCard key={key} data={e} />;
+              return <DocumentsCard key={key} index={key} data={e} />;
             })}
           </InfiniteScroll>
         )}

@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { CommonHeader } from '../../../components/headers';
-import FilterItem from '../../items/components/FilterItem';
-import MiniLoader from '../../../components/MiniLoader';
-import Loader from '../../../components/Loader';
-import { getInvoiceItems } from "../../../store/invoice/slice";
-import NewItemCard from '../components/NewItemCard';
-import NewItemFooter from '../components/NewItemFooter';
-import ViewItemModal from '../components/ViewItemModal';
+import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { CommonHeader } from "../../../components/headers";
+import FilterItem from "../../items/components/FilterItem";
+import MiniLoader from "../../../components/MiniLoader";
+import Loader from "../../../components/Loader";
+import { getInvoiceItems, setOrder } from "../../../store/invoice/slice";
+import NewItemCard from "../components/NewItemCard";
+import NewItemFooter from "../components/NewItemFooter";
+import ViewItemModal from "../components/ViewItemModal";
 
 const AddItems = () => {
-  const { state } = useLocation();
-  const { invoice_number, invoice_id } = state;
+  const params = useParams();
+  const invoice_number = params?.invoiceNumber;
+  const invoice_id = params?.invoiceId;
 
-  const { invoiceItemData: data, order: orderData } = useSelector((store) => store.invoice);
+  const { invoiceItemData: data, order: orderData } = useSelector(
+    (store) => store.invoice
+  );
   const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
@@ -23,21 +26,21 @@ const AddItems = () => {
   const [total, setTotal] = useState(0);
   const [view, setView] = useState(false);
   const [viewData, setViewData] = useState({});
-  const [order, setOrder] = useState({});
-  const [search, setSearch] = useState('');
+  const [order, setOrderData] = useState({});
+  const [search, setSearch] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [miniLoader, setMiniLoader] = useState(false);
   const [filterVal, setFilterVal] = useState({
-    name: 'All Items',
-    value: 'all'
+    name: "All Items",
+    value: "all",
   });
 
   const filterList = [
-    { name: 'All Items', value: 'all' },
-    { name: 'In Stock Items', value: 'inStock' },
-    { name: 'No Stock Items', value: 'outStock' },
-    { name: 'Oty On Order', value: 'otyOnOrder' },
-    { name: 'New Items', value: 'new' }
+    { name: "All Items", value: "all" },
+    { name: "In Stock Items", value: "inStock" },
+    { name: "No Stock Items", value: "outStock" },
+    { name: "Oty On Order", value: "otyOnOrder" },
+    { name: "New Items", value: "new" },
   ];
 
   const common = () => {
@@ -52,16 +55,24 @@ const AddItems = () => {
 
   useEffect(() => {
     common();
-    dispatch(getInvoiceItems({ type: filterVal.value, invoice_number, page: 1, search })).then(
-      () => {
-        offLoader();
-      }
-    );
+    dispatch(
+      getInvoiceItems({
+        type: filterVal.value,
+        invoice_number,
+        page: 1,
+        search,
+      })
+    ).then(() => {
+      offLoader();
+    });
+    return () => {
+      dispatch(setOrder({}));
+    };
   }, [dispatch, filterVal, invoice_number, search]);
 
   useEffect(() => {
     const temp = JSON.parse(JSON.stringify(orderData));
-    setOrder(temp);
+    setOrderData(temp);
     setTotal(0);
     Object.values(orderData).map((e) => {
       setTotal((prev) => {
@@ -75,7 +86,7 @@ const AddItems = () => {
     <div className="min-h-screen">
       <ViewItemModal show={view} data={viewData} setShow={setView} />
       <CommonHeader
-        title={'Add Items'}
+        title={"Add Items"}
         setShow={setShow}
         search={search}
         isSearch={isSearch}
@@ -105,15 +116,18 @@ const AddItems = () => {
                   type: filterVal.value,
                   invoice_number,
                   page: page + 1,
-                  search
+                  search,
                 })
               );
             }}
             loader={<MiniLoader />}
-            hasMore={!(data?.current_page === data?.last_page || data?.total === 0)}
-            className="pb-28 space-y-1">
+            hasMore={
+              !(data?.current_page === data?.last_page || data?.total === 0)
+            }
+            className="space-y-1 pb-28"
+          >
             {(data?.data?.length ?? 0) <= 0 && (
-              <p className="text-darkGray text-center mt-12">No Data Found</p>
+              <p className="mt-12 text-center text-darkGray">No Data Found</p>
             )}
             {(data?.data ?? []).map((e, key) => {
               return (
@@ -133,7 +147,7 @@ const AddItems = () => {
         total={total}
         order={order}
         invoice_id={invoice_id}
-        customer_id={state.customer_id}
+        customer_id={params.customer_id}
       />
     </div>
   );

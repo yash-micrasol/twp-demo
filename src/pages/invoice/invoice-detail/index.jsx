@@ -3,7 +3,7 @@ import { faPen, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/Button";
 import EditDate from "../../../components/EditDate";
 import { SimpleHeader } from "../../../components/headers";
@@ -19,8 +19,8 @@ import QuantityModal from "../components/QuantityModal";
 import { formatDate } from "../../../helpers/constant.js";
 
 const InvoiceDetail = () => {
-  const { state } = useLocation();
-  const { id, invoice_number } = state;
+  const params = useParams();
+  const invoice_number = params?.invoiceNumber;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,12 +40,8 @@ const InvoiceDetail = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (invoice_number) {
-      dispatch(invoiceDetail({ invoice_number }));
-    } else {
-      navigate("invoice-item", { state: { id } });
-    }
-  }, [dispatch, invoice_number, navigate, id, recall]);
+    dispatch(invoiceDetail({ invoice_number }));
+  }, [dispatch, invoice_number, navigate, recall]);
 
   const getStatus = (type) => {
     switch (type) {
@@ -93,19 +89,19 @@ const InvoiceDetail = () => {
       {status === "loading" ? (
         <Loader />
       ) : (
-        <div className="m-3 rounded bg-white">
-          <div className="w-full flex justify-start space-x-4 items-center bg-blue p-2 rounded-t-md">
+        <div className="m-3 bg-white rounded">
+          <div className="flex items-center justify-start w-full p-2 space-x-4 bg-blue rounded-t-md">
             <span>
-              <p className="bg-white text-blue text-4xl flex justify-center items-center w-20 h-20 rounded-full">
+              <p className="flex items-center justify-center w-20 h-20 text-4xl bg-white rounded-full text-blue">
                 {shortName[0]?.charAt(0)}
                 {shortName[1]?.charAt(0)}
               </p>
             </span>
-            <p className="text-white font-semibold">{data?.customer_name}</p>
+            <p className="font-semibold text-white">{data?.customer_name}</p>
           </div>
 
           <div className="border rounded-b-md">
-            <div className="p-4 flex justify-between">
+            <div className="flex justify-between p-4">
               <p className="font-semibold">Inv. {data?.invoice_number}</p>
               <p className="">${data?.invoice_amount}</p>
             </div>
@@ -139,7 +135,7 @@ const InvoiceDetail = () => {
                 />
               </span>
               <p>Payment Type : {data?.payment_type}</p>
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 {getStatus(data?.picked_status)}
                 {data?.picked_status !==
                 ("ready_to_pick" || "partially_picked") ? (
@@ -179,14 +175,10 @@ const InvoiceDetail = () => {
             </div>
           </div>
 
-          <div className="border rounded bg-gray-200 mt-3 space-y-4">
+          <div className="mt-3 space-y-4 bg-gray-200 border rounded">
             <span
-              className="flex justify-start space-x-2 items-center text-lg text-blue font-semibold p-4 cursor-pointer"
-              onClick={() => {
-                navigate("add-items", {
-                  state: { invoice_number, invoice_id: data?.id },
-                });
-              }}
+              className="flex items-center justify-start p-4 space-x-2 text-lg font-semibold cursor-pointer text-blue"
+              onClick={() => navigate(`${data?.id}`)}
             >
               <p className="">Items</p>
               <FontAwesomeIcon className="w-3.5 h-3.5" icon={faPlus} />
@@ -199,7 +191,7 @@ const InvoiceDetail = () => {
                     className="p-4 space-y-2 odd:bg-gray-200 even:bg-white"
                   >
                     <p>{e?.item}</p>
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2">
                         <p>
                           {e?.quantity} @ {e?.sales_price}

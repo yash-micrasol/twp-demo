@@ -5,7 +5,7 @@ import { SimpleHeader } from '../../../components/headers';
 import ReviewOrderCard from '../components/ReviewOrderCard';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { newOrder } from '../../../store/customer/slice';
+import { newOrder, setOrder } from '../../../store/customer/slice';
 import { useDispatch } from 'react-redux';
 import { formatDate } from '../../../helpers/constant';
 
@@ -16,7 +16,7 @@ const ReviewOrder = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [date, setDate] = useState({ e: null, formatedDate: null });
+  const [date, setDate] = useState({ e: null, formattedDate: null });
   const [note, setNote] = useState('');
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const ReviewOrder = () => {
             selected={date.e}
             onChange={(e) => {
               const temp = formatDate(e);
-              setDate({ e, formatedDate: temp });
+              setDate({ e, formattedDate: temp });
             }}
             placeholderText="Select Date"
             dateFormat="MM/dd/yyyy"
@@ -66,20 +66,21 @@ const ReviewOrder = () => {
           onClick={() => {
             dispatch(
               newOrder({
-                delivery_date: date.formatedDate,
+                delivery_date: date.formattedDate,
                 note,
                 customer_id,
                 item_details: JSON.stringify(
                   Object.values(order).map((e) => {
                     return { item_id: e.item_id, qty: e.qty };
                   })
-                )
+                ),
               })
             ).then((res) => {
               if (res.type === "newOrder/fulfilled") {
                 navigate(-2);
+                dispatch(setOrder({}));
               }
-            })
+            });
           }}
         >
           Submit

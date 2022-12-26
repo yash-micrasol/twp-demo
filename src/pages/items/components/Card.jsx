@@ -2,13 +2,13 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import newLogo from '../../../assets/newItem.png';
+import newLogo from '../../../assets/newItem.webp';
 
 const ItemCard = ({ data }) => {
   const navigate = useNavigate();
   return (
     <div
-      className="flex justify-between items-center bg-gray-200 p-2 px-4 cursor-pointer"
+      className="flex items-center justify-between p-2 px-4 bg-gray-200 cursor-pointer"
       onClick={() => {
         navigate('details', { state: { data } });
       }}
@@ -20,7 +20,7 @@ const ItemCard = ({ data }) => {
         )}
       </div>
 
-      <div className="flex items-center space-x-2 z-10">
+      <div className="z-10 flex items-center space-x-2">
         <div className="relative">
           {data?.new_item === 1 && (
             <img src={newLogo} alt="new" className="absolute w-8 h-8 -top-2 -left-4 -z-[1]" />

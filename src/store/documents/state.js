@@ -1,8 +1,8 @@
 const state = {
-  status: 'loading',
+  status: "loading",
   error: null,
-  data: {},
-  document: {}
+  data: null,
+  document: {},
 };
 
 export default state;

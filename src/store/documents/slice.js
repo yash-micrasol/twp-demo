@@ -1,14 +1,14 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { axiosApi } from '../../helpers/api';
-import initialStates from './state';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { axiosApi } from "../../helpers/api";
+import initialStates from "./state";
 
 export const getDocuments = createAsyncThunk(
-  'getDocuments',
+  "getDocuments",
   async ({ search, page }, { rejectWithValue }) => {
     try {
-      const response = await axiosApi.post('/category-list', {
-        type: 'all',
-        search_text: search
+      const response = await axiosApi.post("/category-list", {
+        type: "all",
+        search_text: search,
       });
       return { response: response.data.body, page };
     } catch (error) {
@@ -21,12 +21,12 @@ export const getDocuments = createAsyncThunk(
 );
 
 export const viewDocuments = createAsyncThunk(
-  'viewDocuments',
+  "viewDocuments",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosApi.post('/category-list-view', {
-        search_text: '',
-        ...data
+      const response = await axiosApi.post("/category-list-view", {
+        search_text: "",
+        ...data,
       });
 
       return { response: response.data.body, page: data.page };
@@ -41,48 +41,52 @@ export const viewDocuments = createAsyncThunk(
 
 // create slice
 const documentsSlice = createSlice({
-  name: 'documents',
+  name: "documents",
   initialState: initialStates,
   extraReducers: {
     [getDocuments.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [getDocuments.fulfilled]: (state, action) => {
-      state.status = 'succeed';
-      state.data = action.payload;
+      state.status = "succeed";
       state.data =
         action.payload.page === 1
           ? action.payload.response
           : {
               ...state.data,
               ...action.payload.response,
-              data: [...(state.data?.data ?? []), ...(action.payload?.response?.data ?? [])]
+              data: [
+                ...(state.data?.data ?? []),
+                ...(action.payload?.response?.data ?? []),
+              ],
             };
     },
     [getDocuments.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     [viewDocuments.pending]: (state, action) => {
-      state.status = 'loading';
+      state.status = "loading";
     },
     [viewDocuments.fulfilled]: (state, action) => {
-      state.status = 'succeed';
-      state.document = action.payload;
+      state.status = "succeed";
       state.document =
         action.payload.page === 1
           ? action.payload.response
           : {
               ...state.document,
               ...action.payload.response,
-              data: [...(state.document?.data ?? []), ...(action.payload?.response?.data ?? [])]
+              data: [
+                ...(state.document?.data ?? []),
+                ...(action.payload?.response?.data ?? []),
+              ],
             };
     },
     [viewDocuments.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 
 const { reducer } = documentsSlice;
