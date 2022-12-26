@@ -105,6 +105,9 @@ const Auth = () => {
               className="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer top-1/2 right-3"
             />
           </label>
+          {errors.password && touched.password && (
+            <p className="text-redColor text-start">{errors.password}</p>
+          )}
         </div>
         {error && <p className="text-redColor text-start">{error}</p>}
         <button
